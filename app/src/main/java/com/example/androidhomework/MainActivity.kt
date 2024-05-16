@@ -1,5 +1,6 @@
 package com.example.androidhomework
 
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
+                    val myReceiver = MyReceiver()
+                    val intentFilter = IntentFilter()
+                    intentFilter.addAction("android.intent.action.ACTION_POWER_CONNECTED")
+                    intentFilter.addAction("android.intent.action.ACTION_POWER_DISCONNECTED")
+                    registerReceiver(myReceiver, intentFilter)
                     Greeting("Android")
                 }
             }

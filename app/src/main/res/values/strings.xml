@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Android Homework</string>
+    <string name="title_activity_receiver">ReceiverActivity</string>
 </resources>
