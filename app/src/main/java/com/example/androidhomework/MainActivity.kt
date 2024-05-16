@@ -11,6 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidhomework.ui.theme.AndroidHomeworkTheme
+import androidx.work.Constraints
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +26,26 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val constraints = Constraints.Builder()
+                        .setRequiredNetworkType(androidx.work.NetworkType.NOT_REQUIRED)
+                        .build()
+
+                    val periodicWorkRequest = PeriodicWorkRequestBuilder<BluetoothStatusWorker>(2, TimeUnit.MINUTES)
+                        .setConstraints(constraints)
+                        .build()
+
+                    WorkManager.getInstance(applicationContext).enqueue(periodicWorkRequest)
+
+                    val constraintsAir = Constraints.Builder()
+                        .setRequiredNetworkType(androidx.work.NetworkType.NOT_REQUIRED)
+                        .build()
+
+                    val periodicWorkRequestAir = PeriodicWorkRequestBuilder<AirplaneModeWorker>(2, TimeUnit.MINUTES)
+                        .setConstraints(constraintsAir)
+                        .build()
+
+                    WorkManager.getInstance(applicationContext).enqueue(periodicWorkRequestAir)
+
                     Greeting("Android")
                 }
             }
